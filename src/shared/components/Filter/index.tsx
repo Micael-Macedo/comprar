@@ -1,8 +1,9 @@
 import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
-import { CircleCheck } from 'lucide-react-native'
 
 import { styles } from "./styles";
 import { FilterStatusEnum } from "@/shared/types/FilterStatus";
+
+import StatusIcon from "../StatusIcon";
 
 type Props = TouchableOpacityProps & {
     status: FilterStatusEnum,
@@ -16,7 +17,7 @@ export default function Filter({ status, isActive, ...rest }: Props) {
             activeOpacity={0.8}
             {...rest}
         >
-            <CircleCheck size={18} color="#000" />
+            <StatusIcon status={status} />
             <Text style={styles.title}>
                 {status === FilterStatusEnum.DONE ? "Comprados" : "Pendentes"}
             </Text>
