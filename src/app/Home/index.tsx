@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Image, View, TouchableOpacity, Text, FlatList } from 'react-native';
+import { Image, View, TouchableOpacity, Text, FlatList, Alert } from 'react-native';
 
 import Button from '@/shared/components/Button';
 import Input from '@/shared/components/Input';
@@ -11,44 +11,33 @@ import { FilterStatusEnum } from '@/shared/types/FilterStatus';
 import { IItem } from '@/shared/types/interfaces/item.interface';
 
 const FILTER_STATUS: FilterStatusEnum[] = [FilterStatusEnum.DONE, FilterStatusEnum.PENDING]
-const ITEMS: IItem[] = [
-  {
-    id: "1",
-    description: "Comprar café",
-    status: FilterStatusEnum.DONE
-  },
-  {
-    id: "2",
-    description: "Ir no mercado",
-    status: FilterStatusEnum.DONE
-  },
-  {
-    id: "3",
-    description: "estudar react native",
-    status: FilterStatusEnum.DONE
-  },
-  {
-    id: "4",
-    description: "sobreviver",
-    status: FilterStatusEnum.PENDING
-  },
-  {
-    id: "5",
-    description: "xingar fly",
-    status: FilterStatusEnum.PENDING
-  },
-]
+
 
 export default function Home() {
   const [filter, setFilter] = useState(FilterStatusEnum.PENDING)
   const [description, setDescription] = useState("")
+  const [items, setItems] = useState<IItem[]>([])
+
+
+  function handleAdd(){
+    if(!description.trim()){
+      return Alert.alert("Adicionar", "Informe a descrição para adicionar")
+    }
+
+    const newItem: IItem = {
+      id: Math.random().toString(36).substring(2),
+      description,
+      status: FilterStatusEnum.PENDING
+    }
+
+  }
 
   return (
     <View style={styles.container}>
       <Image source={require('@/assets/logo.png')} style={styles.logo} />
       <View style={styles.form}>
         <Input placeholder='O que você precisa comprar?' onChangeText={setDescription} />
-        <Button title='Salvar' />
+        <Button title='Salvar' onPress={handleAdd} />
       </View>
       <View style={styles.content}>
         <View style={styles.header}>
@@ -68,7 +57,7 @@ export default function Home() {
           </TouchableOpacity>
         </View>
         <FlatList
-          data={ITEMS}
+          data={items}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <Item
