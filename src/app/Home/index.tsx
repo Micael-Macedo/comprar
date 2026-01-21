@@ -1,10 +1,11 @@
 import { Image, View, TouchableOpacity, Text } from 'react-native';
-import { styles } from './style';
 
 import Button from '@/shared/components/Button';
 import Input from '@/shared/components/Input';
 import Filter from '@/shared/components/Filter';
+import Item from '@/shared/components/Item';
 
+import { styles } from './style';
 import { FilterStatusEnum } from '@/shared/types/FilterStatus';
 
 const FILTER_STATUS: FilterStatusEnum[] = [FilterStatusEnum.DONE, FilterStatusEnum.PENDING]
@@ -29,6 +30,10 @@ export default function Home() {
           <Text style={styles.clearText}>Limpar</Text>
         </TouchableOpacity>
         </View>
+        <Item 
+          data={{ status: FilterStatusEnum.DONE, description: "MOCOTÓ" }} 
+          onRemove={() => console.log("troca status")} 
+          onStatus={() => console.log("remover")} />
       </View>
     </View>
   );
