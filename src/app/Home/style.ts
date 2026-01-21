@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
   },
   form: {
     width: "100%",
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
     gap: 7,
     marginTop: 42
   },
@@ -43,4 +43,19 @@ export const styles = StyleSheet.create({
     color: "#828282",
     fontWeight: 600
   },
+  separator: {
+    width: "100%",
+    borderBottomWidth: 1,
+    borderBottomColor: "#EEF0F5",
+    marginVertical: 16
+  },
+  listContent: {
+    paddingTop: 24,
+    paddingBottom: 62,
+  },
+  empty: {
+    fontSize: 14,
+    color: "#808080",
+    textAlign: "center"
+  }
 });

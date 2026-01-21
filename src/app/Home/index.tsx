@@ -1,4 +1,4 @@
-import { Image, View, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { Image, View, TouchableOpacity, Text, FlatList } from 'react-native';
 
 import Button from '@/shared/components/Button';
 import Input from '@/shared/components/Input';
@@ -7,8 +7,36 @@ import Item from '@/shared/components/Item';
 
 import { styles } from './style';
 import { FilterStatusEnum } from '@/shared/types/FilterStatus';
+import { IItem } from '@/shared/types/interfaces/item.interface';
 
 const FILTER_STATUS: FilterStatusEnum[] = [FilterStatusEnum.DONE, FilterStatusEnum.PENDING]
+const ITEMS: IItem[] = [
+  {
+    id: "1",
+    description: "Comprar café",
+    status: FilterStatusEnum.DONE
+  },
+  {
+    id: "2",
+    description: "Ir no mercado",
+    status: FilterStatusEnum.DONE
+  },
+  {
+    id: "3",
+    description: "estudar react native",
+    status: FilterStatusEnum.DONE
+  },
+  {
+    id: "4",
+    description: "sobreviver",
+    status: FilterStatusEnum.PENDING
+  },
+  {
+    id: "5",
+    description: "xingar fly",
+    status: FilterStatusEnum.PENDING
+  },
+]
 
 export default function Home() {
   return (
@@ -30,15 +58,21 @@ export default function Home() {
             <Text style={styles.clearText}>Limpar</Text>
           </TouchableOpacity>
         </View>
-        <ScrollView>
-          {Array.from({ length: 100 }).map((_, index) => (
+        <FlatList
+          data={ITEMS}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
             <Item
-              key={index}
-              data={{ status: FilterStatusEnum.DONE, description: "MOCOTÓ" }}
-              onRemove={() => console.log("remover")}
-              onStatus={() => console.log("troca status")} />
-          ))}
-        </ScrollView>
+              data={{ status: item.status, description: item.description }}
+              onRemove={() => console.log()}
+              onStatus={() => console.log()}
+            />
+          )}
+          showsVerticalScrollIndicator={false}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          contentContainerStyle={styles.listContent}
+          ListEmptyComponent={() => <Text style={styles.empty}>Nenhum item aqui</Text>}
+        />
       </View>
     </View>
   );
