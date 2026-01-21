@@ -1,4 +1,4 @@
-import { Image, View } from 'react-native';
+import { Image, View, TouchableOpacity, Text } from 'react-native';
 import { styles } from './style';
 
 import Button from '@/shared/components/Button';
@@ -6,6 +6,8 @@ import Input from '@/shared/components/Input';
 import Filter from '@/shared/components/Filter';
 
 import { FilterStatusEnum } from '@/shared/types/FilterStatus';
+
+const FILTER_STATUS: FilterStatusEnum[] = [FilterStatusEnum.DONE, FilterStatusEnum.PENDING]
 
 export default function Home() {
   return (
@@ -16,8 +18,17 @@ export default function Home() {
         <Button title='Salvar' />
       </View>
       <View style={styles.content}>
-        <Filter status={FilterStatusEnum.DONE} isActive={true} />
-        <Filter status={FilterStatusEnum.PENDING} isActive={false} />
+        <View style={styles.header}>
+        {
+          FILTER_STATUS.map((status) => (
+            <Filter key={status} status={status} isActive />
+          ))
+        }
+
+        <TouchableOpacity style={styles.clearButton}>
+          <Text style={styles.clearText}>Limpar</Text>
+        </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
