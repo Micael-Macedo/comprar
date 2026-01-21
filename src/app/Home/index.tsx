@@ -1,4 +1,4 @@
-import { Image, View, TouchableOpacity, Text } from 'react-native';
+import { Image, View, TouchableOpacity, Text, ScrollView } from 'react-native';
 
 import Button from '@/shared/components/Button';
 import Input from '@/shared/components/Input';
@@ -20,20 +20,25 @@ export default function Home() {
       </View>
       <View style={styles.content}>
         <View style={styles.header}>
-        {
-          FILTER_STATUS.map((status) => (
-            <Filter key={status} status={status} isActive />
-          ))
-        }
+          {
+            FILTER_STATUS.map((status) => (
+              <Filter key={status} status={status} isActive />
+            ))
+          }
 
-        <TouchableOpacity style={styles.clearButton}>
-          <Text style={styles.clearText}>Limpar</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.clearButton}>
+            <Text style={styles.clearText}>Limpar</Text>
+          </TouchableOpacity>
         </View>
-        <Item 
-          data={{ status: FilterStatusEnum.DONE, description: "MOCOTÓ" }} 
-          onRemove={() => console.log("troca status")} 
-          onStatus={() => console.log("remover")} />
+        <ScrollView>
+          {Array.from({ length: 100 }).map((_, index) => (
+            <Item
+              key={index}
+              data={{ status: FilterStatusEnum.DONE, description: "MOCOTÓ" }}
+              onRemove={() => console.log("remover")}
+              onStatus={() => console.log("troca status")} />
+          ))}
+        </ScrollView>
       </View>
     </View>
   );
