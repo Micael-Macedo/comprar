@@ -39,8 +39,13 @@ export default function Home() {
   }
 
   async function handleRemove(selectedItem: IItem) {
-    await itemsStorage.remove(selectedItem)
-    await itemsByStatus()
+    try {
+      await itemsStorage.remove(selectedItem)
+      await itemsByStatus()
+    } catch (error) {
+      console.log(error)
+      Alert.alert("Erro", "Não foi possível remover.")
+    }
   }
 
   async function setDefaultFilter(){

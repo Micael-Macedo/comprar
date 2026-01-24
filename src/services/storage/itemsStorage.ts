@@ -41,10 +41,20 @@ async function add(newItem: IItem): Promise<IItem[]>{
     return updatedItems
 }
 
-async function remove(newItem: IItem): Promise<IItem[]>{
+async function remove(selected: IItem): Promise<IItem[]>{
     const items = await getAll()
 
-    const updatedItems = items.filter(i => {return i.id !== newItem.id})
+    const updatedItems = items.filter((item) => item.id !== selected.id)
+ 
+    await save(updatedItems)
+
+    return updatedItems
+}
+
+async function update(selected: IItem): Promise<IItem[]>{
+    const items = await getAll()
+
+    const updatedItems = items.filter((item) => item.id !== selected.id)
  
     await save(updatedItems)
 
