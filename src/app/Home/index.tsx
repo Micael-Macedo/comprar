@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Image, View, TouchableOpacity, Text, FlatList, Alert } from 'react-native';
 
 import Button from '@/shared/components/Button';
@@ -9,6 +9,7 @@ import Item from '@/shared/components/Item';
 import { styles } from './style';
 import { FilterStatusEnum } from '@/shared/types/FilterStatus';
 import { IItem } from '@/shared/types/interfaces/item.interface';
+import { itemsStorage } from '@/services/storage/itemsStorage';
 
 const FILTER_STATUS: FilterStatusEnum[] = [FilterStatusEnum.DONE, FilterStatusEnum.PENDING]
 
@@ -19,8 +20,8 @@ export default function Home() {
   const [items, setItems] = useState<IItem[]>([])
 
 
-  function handleAdd(){
-    if(!description.trim()){
+  async function handleAdd() {
+    if (!description.trim()) {
       return Alert.alert("Adicionar", "Informe a descrição para adicionar")
     }
 
@@ -30,7 +31,28 @@ export default function Home() {
       status: FilterStatusEnum.PENDING
     }
 
+    await itemsStorage.add(newItem)
+    await getItems()
   }
+
+  async function handleRemove(selectedItem: IItem) {
+    await itemsStorage.remove(selectedItem)
+    await getItems()
+  }
+
+  async function getItems() {
+    try {
+      const response = await itemsStorage.getAll()
+      setItems(response)
+    } catch (error) {
+      console.log(error)
+      Alert.alert("Erro", "Não foi possível filtrar os itens.")
+    }
+  }
+
+  useEffect(() => {
+    getItems()
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -43,12 +65,12 @@ export default function Home() {
         <View style={styles.header}>
           {
             FILTER_STATUS.map((status) => (
-              <Filter 
-                key={status} 
-                status={status} 
-                isActive={status === filter} 
+              <Filter
+                key={status}
+                status={status}
+                isActive={status === filter}
                 onPress={() => setFilter(status)}
-                />
+              />
             ))
           }
 
@@ -62,7 +84,7 @@ export default function Home() {
           renderItem={({ item }) => (
             <Item
               data={{ status: item.status, description: item.description }}
-              onRemove={() => console.log()}
+              onRemove={() => handleRemove(item)}
               onStatus={() => console.log()}
             />
           )}
