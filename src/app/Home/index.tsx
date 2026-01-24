@@ -48,6 +48,20 @@ export default function Home() {
     }
   }
 
+  async function handleItemStatus(selectedItem: IItem) {
+    try {
+      selectedItem.status = selectedItem.status === FilterStatusEnum.DONE ? FilterStatusEnum.PENDING : FilterStatusEnum.DONE
+      await itemsStorage.update(selectedItem)
+
+      await itemsByStatus()
+
+      Alert.alert("Atualizado", `Status atualizado para ${selectedItem.status}`)
+    } catch (error) {
+      console.log(error)
+      Alert.alert("Erro", "Não foi possível atualizar status.")
+    }
+  }
+
   async function setDefaultFilter(){
     await itemsByStatus()
 
@@ -104,7 +118,7 @@ export default function Home() {
             <Item
               data={{ status: item.status, description: item.description }}
               onRemove={() => handleRemove(item)}
-              onStatus={() => console.log()}
+              onStatus={() => handleItemStatus(item)}
             />
           )}
           showsVerticalScrollIndicator={false}

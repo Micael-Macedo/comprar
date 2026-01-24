@@ -24,7 +24,7 @@ async function getByStatus(status: FilterStatusEnum): Promise<IItem[]> {
     }
 }
 
-async function save(items: IItem[]): Promise<void>{
+async function save(items: IItem[]): Promise<void> {
     try {
         await AsyncStorage.setItem(ITEMS_STORAGE_KEY, JSON.stringify(items))
     } catch (error) {
@@ -32,7 +32,7 @@ async function save(items: IItem[]): Promise<void>{
     }
 }
 
-async function add(newItem: IItem): Promise<IItem[]>{
+async function add(newItem: IItem): Promise<IItem[]> {
     const items = await getAll()
     const updatedItems = [...items, newItem]
 
@@ -41,29 +41,34 @@ async function add(newItem: IItem): Promise<IItem[]>{
     return updatedItems
 }
 
-async function remove(selected: IItem): Promise<IItem[]>{
+async function remove(selected: IItem): Promise<IItem[]> {
     const items = await getAll()
 
     const updatedItems = items.filter((item) => item.id !== selected.id)
- 
+
     await save(updatedItems)
 
     return updatedItems
 }
 
-async function update(selected: IItem): Promise<IItem[]>{
+async function update(updatedItem: IItem): Promise<IItem[]> {
     const items = await getAll()
 
-    const updatedItems = items.filter((item) => item.id !== selected.id)
- 
+    const itemPosition = items.findIndex((item) => item.id === updatedItem.id)
+    items[itemPosition] = updatedItem
+
+    const updatedItems = items
     await save(updatedItems)
 
     return updatedItems
 }
+
+
 
 export const itemsStorage = {
     getAll,
     getByStatus,
     add,
-    remove
+    remove,
+    update
 }
