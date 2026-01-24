@@ -32,12 +32,22 @@ export default function Home() {
     }
 
     await itemsStorage.add(newItem)
-    await itemsByStatus()
+
+    setDefaultFilter()
+
+    Alert.alert("Adicionado", `Adicionado ${description}`)
   }
 
   async function handleRemove(selectedItem: IItem) {
     await itemsStorage.remove(selectedItem)
     await itemsByStatus()
+  }
+
+  async function setDefaultFilter(){
+    await itemsByStatus()
+
+    setFilter(FilterStatusEnum.PENDING)
+    setDescription("")
   }
 
   async function itemsByStatus() {
@@ -58,7 +68,11 @@ export default function Home() {
     <View style={styles.container}>
       <Image source={require('@/assets/logo.png')} style={styles.logo} />
       <View style={styles.form}>
-        <Input placeholder='O que você precisa comprar?' onChangeText={setDescription} />
+        <Input 
+          placeholder='O que você precisa comprar?' 
+          onChangeText={setDescription} 
+          value={description}
+          />
         <Button title='Salvar' onPress={handleAdd} />
       </View>
       <View style={styles.content}>
