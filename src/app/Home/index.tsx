@@ -50,12 +50,10 @@ export default function Home() {
 
   async function handleItemStatus(selectedItem: IItem) {
     try {
-      selectedItem.status = selectedItem.status === FilterStatusEnum.DONE ? FilterStatusEnum.PENDING : FilterStatusEnum.DONE
-      await itemsStorage.update(selectedItem)
+      await itemsStorage.toggleItemStatus(selectedItem)
 
       await itemsByStatus()
 
-      Alert.alert("Atualizado", `Status atualizado para ${selectedItem.status}`)
     } catch (error) {
       console.log(error)
       Alert.alert("Erro", "Não foi possível atualizar status.")

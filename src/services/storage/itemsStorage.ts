@@ -63,6 +63,21 @@ async function update(updatedItem: IItem): Promise<IItem[]> {
     return updatedItems
 }
 
+async function toggleItemStatus(selectedItem: IItem): Promise<IItem[]> {
+    const items = await getAll()
+
+    const updatedItems = items.map((item) =>
+        item.id === selectedItem.id
+            ? {
+                ...item,
+                status: item.status === FilterStatusEnum.DONE ? FilterStatusEnum.PENDING : FilterStatusEnum.DONE
+            } : item
+    )
+    await save(updatedItems)
+
+    return updatedItems
+}
+
 async function clear(): Promise<void> {
     try {
         await AsyncStorage.removeItem(ITEMS_STORAGE_KEY)
@@ -77,5 +92,6 @@ export const itemsStorage = {
     add,
     remove,
     update,
-    clear
+    clear,
+    toggleItemStatus
 }
