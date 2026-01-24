@@ -63,12 +63,19 @@ async function update(updatedItem: IItem): Promise<IItem[]> {
     return updatedItems
 }
 
-
+async function clear(): Promise<void> {
+    try {
+        await AsyncStorage.removeItem(ITEMS_STORAGE_KEY)
+    } catch (error) {
+        throw new Error("ITEMS_CLEAR: " + error)
+    }
+}
 
 export const itemsStorage = {
     getAll,
     getByStatus,
     add,
     remove,
-    update
+    update,
+    clear
 }

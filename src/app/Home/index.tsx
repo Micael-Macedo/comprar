@@ -62,6 +62,28 @@ export default function Home() {
     }
   }
 
+  function handleClear(){
+    Alert.alert("Limpar", "Deseja remover todos?", [
+      {
+        text: "NÃO", style: "cancel"
+      },
+      {
+        text: "SIM" ,onPress: () => onClear()
+      }
+    ])
+  }
+
+  async function onClear(){
+    try {
+      await itemsStorage.clear()
+      setItems([])
+      
+    } catch (error) {
+      console.log(error)
+      Alert.alert("Erro", "Não foi possivel remover todos os itens.")
+    }
+  }
+
   async function setDefaultFilter(){
     await itemsByStatus()
 
@@ -107,7 +129,7 @@ export default function Home() {
             ))
           }
 
-          <TouchableOpacity style={styles.clearButton}>
+          <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
             <Text style={styles.clearText}>Limpar</Text>
           </TouchableOpacity>
         </View>
